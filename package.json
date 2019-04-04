@@ -1,0 +1,19 @@
+{
+  "name": "http-post-automater",
+  "version": "1.0.0",
+  "description": "Automate http post requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dombarter/http-post-automater.git"
+  },
+  "author": "dombarter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dombarter/http-post-automater/issues"
+  },
+  "homepage": "https://github.com/dombarter/http-post-automater#readme"
+}
