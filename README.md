@@ -30,7 +30,7 @@ var options = {
 automate.start(options)
 ```
 
-You can also add a numerical identifier to each property in your data. This will simply increment a number in place of this placeholder. this means you can post different data for each test.
+You can also add a numerical identifier to each property in your data. This will simply increment a number in place of this placeholder. This means you can post different data for each test.
 
 ```
 var options = {

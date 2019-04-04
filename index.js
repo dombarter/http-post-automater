@@ -93,7 +93,6 @@ exports.start = function(options){
                     dataToPost[wildcardProperties[i]] = (dataToPost[wildcardProperties[i]]).replace("<% numerical %>",`${counter}`);
                 }
             }
-            console.log(dataToPost);
 
             await postData(dataToPost)
             counter = counter + 1;
@@ -101,17 +100,3 @@ exports.start = function(options){
         }
     }, (options.delay * 1000))
 }
-
-// var options_ = {
-//     number: 5,
-//     delay: 5,
-//     endpoint: "https://i7lis7jv3f.execute-api.eu-west-2.amazonaws.com/prod/teams/create",
-//     data:{
-//         apiPassword:"api-pass-123",
-// 	    teamName:"Team <% numerical %>",
-// 	    email:"<% numerical %>@insight.com",
-// 	    location:"London, GB"
-//     }
-// }
-
-// exports.start(options_);
