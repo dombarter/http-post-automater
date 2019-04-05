@@ -12,7 +12,7 @@ This is my first npm package so please be kind :)
 
 You must define certain properties to start the tests:
 * Number of tests to be performed
-* Delay between tests (minimum 5 seconds)
+* Delay between tests (minimum 1 second)
 * Endpoint to post data to
 * Data you require to post
 * The parts of the data that will be modified (if at all)
@@ -20,7 +20,7 @@ You must define certain properties to start the tests:
 ```
 var options = {
   number: 10,
-  delay: 5
+  delay: 1
   endpoint: "http://api.co.uk"
   data: {
     name: "John Smith"
@@ -35,7 +35,7 @@ You can also add a numerical identifier to each property in your data. This will
 ```
 var options = {
   number: 3,
-  delay: 5,
+  delay: 1,
   endpoint: "http://api.co.uk",
   data: {
     email: "<% numerical %>@gmail.com"

@@ -2,10 +2,17 @@ var readline = require("readline"); //imports
 var request = require("request");
 var roundTo = require('round-to');
 
-function writeWaitingPercent(p) { //updates the console
+function writeWaitingPercent(p,currentCounter,total,delay) { //updates the console
     readline.clearLine(process.stdout);
     readline.cursorTo(process.stdout, 0);
-    process.stdout.write(`${p}% Complete`);
+
+    var totalSeconds = (total*delay);
+    var secondsPassed = (currentCounter*delay);
+    var deltaTime = totalSeconds - secondsPassed;
+    var minutes = Math.floor(deltaTime/60);
+    var seconds = Math.round(deltaTime%60);
+
+    process.stdout.write(`${p}% Complete | ${minutes}min, ${seconds}secs remaining`);
 }
 
 exports.helloWorld = function(){
@@ -32,7 +39,7 @@ exports.start = function(options){
 
     // default certain items to their standard values
 
-    if(options.delay < 5){options.delay = 5; console.log("Delay was set to default value of 5 seconds")};
+    if(options.delay < 1){options.delay = 1; console.log("Delay was set to default value of 1 second")};
     if(options.number < 1){options.number = 1; console.log("Number was set to defualt value of 1")};
 
     // find the prperties with the wildcard property
@@ -65,7 +72,7 @@ exports.start = function(options){
 
     // set up the intial progress bar
 
-    writeWaitingPercent(0);
+    writeWaitingPercent(0,0,(options.number + 1),options.delay);
 
     // set up the base variables
 
@@ -96,7 +103,22 @@ exports.start = function(options){
 
             await postData(dataToPost)
             counter = counter + 1;
-            writeWaitingPercent(roundTo((counter/total)*100,2));
+            writeWaitingPercent(roundTo((counter/total)*100,2),counter,(total + 1),options.delay);
         }
     }, (options.delay * 1000))
 }
+
+// var options_1 = {
+//     number: 10,
+//     delay: 2,
+//     endpoint: "https://i7lis7jv3f.execute-api.eu-west-2.amazonaws.com/prod/users/register",
+//     data:{
+//         apiPassword:"api-pass-123",
+//         email:"<% numerical %>@insight.com",
+//         password:"password123",
+//         name:"User <% numerical %>",
+//         code:"insight-walking-app",
+//     }
+// }
+
+// exports.start(options_1);
