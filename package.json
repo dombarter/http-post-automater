@@ -1,6 +1,6 @@
 {
   "name": "http-post-automater",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Automate http post requests",
   "main": "index.js",
   "scripts": {

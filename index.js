@@ -82,30 +82,34 @@ exports.start = function(options){
 
     // begin posting the data
 
-    var interval = setInterval(async function(){
-        if(counter === total){
-            clearInterval(interval)
-            console.log("\n\nFinished!");
-        }
-        else{
-            // create the data to post
-            dataToPost = {}; //makes empty object
-
-            for(var j = 0; j < allProperties.length; j++){ //creates new obejct properties
-                dataToPost[allProperties[j]] = options.data[allProperties[j]];
+    return new Promise(function(resolve,reject){
+        var interval = setInterval(async function(){
+            if(counter === total){
+                clearInterval(interval)
+                console.log("\n\nFinished!");
+    
+    
             }
-
-            if(wildcardProperties.length > 0){ //assigns all wildcards
-                for(var i =0; i < wildcardProperties.length; i++){
-                    dataToPost[wildcardProperties[i]] = (dataToPost[wildcardProperties[i]]).replace("<% numerical %>",`${counter}`);
+            else{
+                // create the data to post
+                dataToPost = {}; //makes empty object
+    
+                for(var j = 0; j < allProperties.length; j++){ //creates new obejct properties
+                    dataToPost[allProperties[j]] = options.data[allProperties[j]];
                 }
+    
+                if(wildcardProperties.length > 0){ //assigns all wildcards
+                    for(var i =0; i < wildcardProperties.length; i++){
+                        dataToPost[wildcardProperties[i]] = (dataToPost[wildcardProperties[i]]).replace("<% numerical %>",`${counter}`);
+                    }
+                }
+    
+                await postData(dataToPost)
+                counter = counter + 1;
+                writeWaitingPercent(roundTo((counter/total)*100,2),counter,(total + 1),options.delay);
             }
-
-            await postData(dataToPost)
-            counter = counter + 1;
-            writeWaitingPercent(roundTo((counter/total)*100,2),counter,(total + 1),options.delay);
-        }
-    }, (options.delay * 1000))
+        }, (options.delay * 1000))
+    })
 }
 
 // var options_1 = {
