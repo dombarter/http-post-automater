@@ -1,6 +1,9 @@
 var readline = require("readline"); //imports
 var request = require("request");
 var roundTo = require('round-to');
+var fs = require("fs");
+
+var filePath = "";
 
 function writeWaitingPercent(p,currentCounter,total,delay) { //updates the console
     readline.clearLine(process.stdout);
@@ -13,6 +16,19 @@ function writeWaitingPercent(p,currentCounter,total,delay) { //updates the conso
     var seconds = Math.round(deltaTime%60);
 
     process.stdout.write(`${p}% Complete | ${minutes}min, ${seconds}secs remaining`);
+}
+
+function updateLogs(dataToPost,response,counter){
+    var one = (`POST request number ${counter + 1}: ==========================`);
+    var two = (`POSTED data:`);
+    var three = (`${JSON.stringify(dataToPost)}`);
+    var four = (`RESPONSE data:`);
+    var five = (`${JSON.stringify(response)}`);
+
+    var dataToWrite = `\n${one}\n\n${two}\n${three}\n\n${four}\n${five}\n`;
+    fs.appendFile(filePath,dataToWrite,function(error){
+        //error
+    })
 }
 
 exports.helloWorld = function(){
@@ -65,7 +81,7 @@ exports.start = function(options){
                 body: dataToPost_,
             },
             function(error,response,body){
-                resolve(true)
+                resolve(body)
             })
         })
     }
@@ -79,6 +95,7 @@ exports.start = function(options){
     var counter = 0; //current iteration
     var total = options.number; //total number to post
     var dataToPost;
+    filePath = `logs-${new Date().getTime()}.txt`;
 
     // begin posting the data
 
@@ -87,6 +104,7 @@ exports.start = function(options){
             if(counter === total){
                 clearInterval(interval)
                 console.log("\n\nFinished!");
+                console.log(`Logs available in /${filePath}`);
                 resolve(true);
             }
             else{
@@ -103,7 +121,8 @@ exports.start = function(options){
                     }
                 }
     
-                await postData(dataToPost)
+                var postResponse = await postData(dataToPost);
+                updateLogs(dataToPost,postResponse,counter);
                 counter = counter + 1;
                 writeWaitingPercent(roundTo((counter/total)*100,2),counter,(total + 1),options.delay);
             }
@@ -112,7 +131,7 @@ exports.start = function(options){
 }
 
 // var options_1 = {
-//     number: 10,
+//     number: 5,
 //     delay: 2,
 //     endpoint: "https://i7lis7jv3f.execute-api.eu-west-2.amazonaws.com/prod/users/register",
 //     data:{
