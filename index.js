@@ -87,8 +87,7 @@ exports.start = function(options){
             if(counter === total){
                 clearInterval(interval)
                 console.log("\n\nFinished!");
-    
-    
+                resolve(true);
             }
             else{
                 // create the data to post
